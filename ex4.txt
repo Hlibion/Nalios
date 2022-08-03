@@ -1,0 +1,29 @@
+CREATE TABLE Product (
+  ProdID int NOT NULL PRIMARY KEY,
+  Name varchar(25),
+  Price float,
+  CreationDate date
+  );
+  
+CREATE TABLE Category (
+  CatID int NOT NULL PRIMARY KEY,
+  Name varchar(25),
+  Public bool
+  );
+  
+CREATE TABLE ProdCat (
+  ProdID int NOT NULL, 
+  CatID int NOT NULL,
+  CONSTRAINT PK_ProdCat PRIMARY KEY (ProdID,CatID)
+  CONSTRAINT FK_Prod FOREIGN KEY (ProdID)
+    REFERENCES Product(ProdID)
+  CONSTRAINT FK_Prod FOREIGN KEY (CatID)
+    REFERENCES Category(CatID)
+  );
+  
+SQL QUERY :
+Il faut faire la somme des paires prod-cat de la table ProdCat pour lesquels la categorie est publique (Public = T dans la table Category).
+On ressort ensuite le produit de la table Product quand la somme est supérieure à 5.
+ 
+
+
