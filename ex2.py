@@ -3,19 +3,49 @@ import numpy as np
 
 def sum_neighbors(mat, coord):
     coordx, coordy = coord
-    if coordx == 0 or coordx == mat.shape[0]-1 or coordy == 0 or coordy == mat.shape[1]-1:
-        #gérer les extrémités de la matrice
-        neighbors = []
-        if coordx !=0 and coordy !=0:
-            neighbors.append(mat[coordx-1][coordy-1])
-            neighbors.append(mat[coordx-1][coordy])
-            neighbors.append(mat[coordx][coordy-1])
-        if coordx != mat.shape[0]-1 and coordy != mat.shape[1]-1:
-            neighbors.append(mat[coordx+1][coordy+1])
-            neighbors.append(mat[coordx+1][coordy])
-            neighbors.append(mat[coordx][coordy+1])
-        #to continue
-            
+    shapex = mat.shape[0]-1
+    shapey = mat.shape[1]-1
+    neighbors = []
+    if coordx==0 and coordy==0:
+        neighbors.append(mat[coordx+1][coordy])
+        neighbors.append(mat[coordx+1][coordy+1])
+        neighbors.append(mat[coordx][coordy+1])
+    elif coordx==0 and coordy==shapey:
+        neighbors.append(mat[coordx+1][coordy])
+        neighbors.append(mat[coordx+1][coordy-1])
+        neighbors.append(mat[coordx][coordy-1])
+    elif coordx==shapex and coordy==0:
+        neighbors.append(mat[coordx-1][coordy])
+        neighbors.append(mat[coordx-1][coordy+1])
+        neighbors.append(mat[coordx-1][coordy])
+    elif coordx==shapex and coordy==shapey:
+        neighbors.append(mat[coordx-1][coordy])
+        neighbors.append(mat[coordx-1][coordy-1])
+        neighbors.append(mat[coordx][coordy-1])
+    elif coordx==0 and 0<coordy<shapey :
+        neighbors.append(mat[coordx][coordy-1])
+        neighbors.append(mat[coordx][coordy+1])
+        neighbors.append(mat[coordx+1][coordy-1])
+        neighbors.append(mat[coordx+1][coordy])
+        neighbors.append(mat[coordx+1][coordy+1])
+    elif coordx==shapex and 0<coordy<shapey:
+        neighbors.append(mat[coordx][coordy-1])
+        neighbors.append(mat[coordx][coordy+1])
+        neighbors.append(mat[coordx-1][coordy-1])
+        neighbors.append(mat[coordx-1][coordy])
+        neighbors.append(mat[coordx-1][coordy+1])
+    elif 0<coordx<shapex and coordy==0:
+        neighbors.append(mat[coordx-1][coordy])
+        neighbors.append(mat[coordx+1][coordy])
+        neighbors.append(mat[coordx-1][coordy+1])
+        neighbors.append(mat[coordx][coordy+1])
+        neighbors.append(mat[coordx+1][coordy+1])
+    elif 0<coordx<shapex and coordy==shapey:
+        neighbors.append(mat[coordx-1][coordy])
+        neighbors.append(mat[coordx+1][coordy])
+        neighbors.append(mat[coordx-1][coordy-1])
+        neighbors.append(mat[coordx][coordy-1])
+        neighbors.append(mat[coordx+1][coordy-1])
     else :
         neighbors = [
             mat[coordx-1][coordy-1],
@@ -27,8 +57,7 @@ def sum_neighbors(mat, coord):
             mat[coordx+1][coordy],
             mat[coordx+1][coordy+1],
             ]
-            
-    return sum(map(sum, neighbors))
+    return np.sum(neighbors)
 
 def game_of_life(matrix_cell):
     x,y = matrix_cell.shape
@@ -53,3 +82,8 @@ def game_of_life(matrix_cell):
             
         
     return new_mat
+
+def game_of_life_n_it(n_it, mat):
+    for i in range(n_it):
+        mat = game_of_life(mat)
+    return mat

@@ -25,5 +25,13 @@ SQL QUERY :
 Il faut faire la somme des paires prod-cat de la table ProdCat pour lesquels la categorie est publique (Public = T dans la table Category).
 On ressort ensuite le produit de la table Product quand la somme est supérieure à 5.
  
-
+SELECT *
+FROM Product
+INNER JOIN ProdCat on ProdCat.ProdID=Product.ProdID
+WHERE ProdCat.CatID IN
+	(SELECT CatID
+	FROM Category
+	WHERE Public=1)
+GROUP BY Product.ProdID
+HAVING count(CatID)>5
 
